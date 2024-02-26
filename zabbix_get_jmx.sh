@@ -1,1 +1,1 @@
-zabbix_get_jmx --java-gateway-host HOST_WITH_INSTALLED_GW --java-gateway-port 10052 --jmx-server MONITORED_HOST --jmx-port 4447 --jmx-user USER --jmx-pass ZABBIX --new-protocol --key $1 | jq '.data[0].value | fromjson | .data'
+zabbix_get_jmx --java-gateway-host HOST_WITH_INSTALLED_GW --java-gateway-port 10052 --jmx-server MONITORED_HOST --jmx-port 4447 --jmx-user USER --jmx-pass ZABBIX --jmx-protocol remote+https --key $1 | jq '.data[0].value | fromjson | .data'

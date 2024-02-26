@@ -1,11 +1,12 @@
 # zabbix_get_jmx
 
+### Requirements
+python3
+jq
+
 ### Install
 ```
-yum install python34 jq -y
-```
-```
-wget https://raw.githubusercontent.com/hermanekt/zabbix_get_jmx/master/zabbix_get_jmx -P /usr/bin/
+wget -P /usr/bin/ https://raw.githubusercontent.com/alchuk/zabbix_get_jmx/master/zabbix_get_jmx
 ```
 ```
 chmod +x /usr/bin/zabbix_get_jmx
@@ -20,7 +21,7 @@ usage: zabbix_get_jmx [-h] [--java-gateway-host JAVA_GATEWAY_HOST]
                       [--java-gateway-port JAVA_GATEWAY_PORT]
                       [--jmx-server JMX_SERVER] [--jmx-port JMX_PORT]
                       [--key KEY] [--jmx-user JMX_USER] [--jmx-pass JMX_PASS]
-                      [--new-protocol]
+                      [--jmx-protocol JMX_PROTOCOL]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -31,12 +32,18 @@ optional arguments:
   --key KEY
   --jmx-user JMX_USER
   --jmx-pass JMX_PASS
-  --new-protocol
+  --jmx-protocol JMX_PROTOCOL
 ```
+Where:
+JAVA_GATEWAY_HOST: usually zabbix-server or zabbix-proxy host
+JAVA_GATEWAY_PORT: usually 10052
+JMX_SERVER: your JMX-enabled target host
+JMX_PROTOCOL: remote|remote+https|etc
+
 ### Example zabbix_get_jmx
 Test discovery Garbage collector **
 ```
-zabbix_get_jmx --java-gateway-host HOST_WITH_INSTALLED_GW --java-gateway-port 10052 --jmx-server MONITORED_HOST --jmx-port 4447 --jmx-user USER --jmx-pass ZABBIX --new-protocol --key 'jmx.discovery[beans,"*:type=GarbageCollector,name=*"]' | jq '.data[0].value | fromjson | .data'
+zabbix_get_jmx --java-gateway-host HOST_WITH_INSTALLED_GW --java-gateway-port 10052 --jmx-server MONITORED_HOST --jmx-port 4447 --jmx-user USER --jmx-pass ZABBIX --jmx-protocol remote+https --key 'jmx.discovery[beans,"*:type=GarbageCollector,name=*"]' | jq '.data[0].value | fromjson | .data'
 ```
 Output:
 ```
