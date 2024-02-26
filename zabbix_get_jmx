@@ -15,7 +15,7 @@ def parse_args():
   parser.add_argument("--key")
   parser.add_argument("--jmx-user")
   parser.add_argument("--jmx-pass")
-  parser.add_argument("--new-protocol", default=False, action='store_true')
+  parser.add_argument("--jmx-protocol")
   args = parser.parse_args(sys.argv[1:])
 
 def main():
@@ -26,12 +26,12 @@ def main():
   if args.jmx_user and args.jmx_pass:
     query['username'] = args.jmx_user
     query['password'] = args.jmx_pass
-  if args.new_protocol:
+  if args.jmx_protocol:
     conn = query.pop('conn')
     port = query.pop('port')
     # Original jmx_endpoint
     # query['jmx_endpoint'] = 'service:jmx:rmi:///jndi/rmi://%s:%s/jmxrmi' % (conn, port)
-    query['jmx_endpoint'] = 'service:jmx:remote://%s:%s/' % (conn, port)
+    query['jmx_endpoint'] = 'service:jmx:%s://%s:%s/' % (args.jmx_protocol, conn, port)
   else:
     conn = query.pop('conn')
     port = query.pop('port')
@@ -40,7 +40,7 @@ def main():
   query_str = json.dumps(query)
   query_len = len(query_str)
   query_len_hex = '%.16x' % query_len
-  query_len_bin = re.sub(r'^(..)(..)(..)(..)(..)(..)(..)(..)', '\\x\\8\\x\\7\\x\\6\\x\\5\\x\\4\\x\\3\\x\\2\\x\\1', query_len_hex)
+  query_len_bin = re.sub(r'^(..)(..)(..)(..)(..)(..)(..)(..)', r'\\x\8\\x\7\\x\6\\x\5\\x\4\\x\3\\x\2\\x\1', query_len_hex)
   query_bin = "ZBXD\\x01%s" % (query_len_bin)
   query_bin = query_bin.encode('latin-1').decode('unicode_escape')
   query_bin += query_str
