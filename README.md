@@ -34,11 +34,11 @@ optional arguments:
   --jmx-pass JMX_PASS
   --jmx-protocol JMX_PROTOCOL
 ```
-Where:
-JAVA_GATEWAY_HOST: usually zabbix-server or zabbix-proxy host
-JAVA_GATEWAY_PORT: usually 10052
-JMX_SERVER: your JMX-enabled target host
-JMX_PROTOCOL: remote|remote+https|etc
+Where:  
+JAVA_GATEWAY_HOST: usually zabbix-server or zabbix-proxy host  
+JAVA_GATEWAY_PORT: usually 10052  
+JMX_SERVER: your JMX-enabled target host  
+JMX_PROTOCOL: remote|remote+https|etc  
 
 ### Example zabbix_get_jmx
 Test discovery Garbage collector **
